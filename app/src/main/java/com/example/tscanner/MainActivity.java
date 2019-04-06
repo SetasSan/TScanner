@@ -19,6 +19,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.Manifest;
 
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity{
     private List<WifiP2pDevice> peers = new ArrayList<>();
     private int _selectedWindow = R.id.navigation_home;
     final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+    private static final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1001;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -75,6 +78,10 @@ public class MainActivity extends AppCompatActivity{
         mTextMessage.setMovementMethod(new ScrollingMovementMethod());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+        }
+
         StartWifiDiscovery();
         mBluetoothAdapter.startDiscovery();
         broadcastReceiver.ScanP2pWIFI();
