@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity{
         }
 
         StartWifiDiscovery();
-        mBluetoothAdapter.startDiscovery();
-        broadcastReceiver.ScanP2pWIFI();
         mHandler = new Handler();
         mStatusChecker.run();
     }
@@ -184,9 +182,11 @@ public class MainActivity extends AppCompatActivity{
                         RenderWifiStatus();
                         return;
                     case R.id.navigation_dashboard:
+                        mBluetoothAdapter.startDiscovery();
                         RenderBluetoothDevices();
                         return;
                     case R.id.navigation_notifications:
+                        broadcastReceiver.ScanP2pWIFI();
                         RenderP2pWifiDevices();
                         return;
                 }
