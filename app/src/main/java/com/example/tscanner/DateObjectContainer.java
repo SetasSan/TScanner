@@ -1,9 +1,9 @@
 package com.example.tscanner;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class DateObjectContainer <T> {
     public T Device;
-    public LocalDateTime Time;
+    public Date Time;
     public String MAC;
 }

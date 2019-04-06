@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity{
     private int _selectedWindow = R.id.navigation_home;
     final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -78,6 +76,8 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         StartWifiDiscovery();
+        mBluetoothAdapter.startDiscovery();
+        broadcastReceiver.ScanP2pWIFI();
         mHandler = new Handler();
         mStatusChecker.run();
     }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity{
             sb.append("friendly name: "+ scanresult.operatorFriendlyName+"\n");
             sb.append("isPasspointNetwork: "+scanresult.isPasspointNetwork()+"\n");
             sb.append("is80211mcResponder: "+scanresult.is80211mcResponder()+"\n");
-            sb.append("Found at: "+dateFormat.format(wifiList.get(i).Time)+"\n");
+            sb.append("Found at: "+ wifiList.get(i).Time.toString() +"\n");
             sb.append("------------------------------\n");
         }
         if(!mTextMessage.getText().equals(sb) && !sb.equals("")){
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity{
             BluetoothDevice scanresult = devices.get(i).Device;
             sb.append("Name: "+scanresult.getName()+"\n");
             sb.append("SSID: "+scanresult.getAddress()+"\n");
-            sb.append("Found at: "+dateFormat.format(devices.get(i).Time)+"\n");
+            sb.append("Found at: "+ devices.get(i).Time.toString() +"\n");
             sb.append("------------------------------\n");
         }
         if(!mTextMessage.getText().equals(sb) && !sb.equals("")){
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity{
             sb.append("primaryDeviceType: "+scanresult.primaryDeviceType+"\n");
             sb.append("secondaryDeviceType: "+scanresult.secondaryDeviceType+"\n");
             sb.append("status: "+scanresult.status+"\n");
-            sb.append("Found at: "+dateFormat.format(devices.get(i).Time)+"\n");
+            sb.append("Found at: "+ devices.get(i).Time.toString() +"\n");
             sb.append("------------------------------\n");
         }
         if(!mTextMessage.getText().equals(sb) && !sb.equals("")){
@@ -177,11 +177,9 @@ public class MainActivity extends AppCompatActivity{
                         RenderWifiStatus();
                         return;
                     case R.id.navigation_dashboard:
-                        mBluetoothAdapter.startDiscovery();
                         RenderBluetoothDevices();
                         return;
                     case R.id.navigation_notifications:
-                        broadcastReceiver.ScanP2pWIFI();
                         RenderP2pWifiDevices();
                         return;
                 }

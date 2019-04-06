@@ -17,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import java.util.Calendar;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,7 +55,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                         DateObjectContainer<WifiP2pDevice> element = new DateObjectContainer<>();
                         element.Device = device;
                         element.MAC = device.deviceAddress;
-                        element.Time = LocalDateTime.now();
+                        element.Time = Calendar.getInstance().getTime();
                         p2pWifiDevices.add(element);
                     }
 
@@ -111,7 +112,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                     DateObjectContainer<ScanResult> element = new DateObjectContainer<>();
                     element.Device = dev;
                     element.MAC = dev.BSSID;
-                    element.Time = LocalDateTime.now();
+                    element.Time = Calendar.getInstance().getTime();
                     if(!CheckIfContains(dev.BSSID, wifiList)) {
                         wifiList.add(element);
                     }
@@ -137,7 +138,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 DateObjectContainer<BluetoothDevice> element = new DateObjectContainer<>();
                 element.Device = device;
                 element.MAC = device.getAddress();
-                element.Time = LocalDateTime.now();
+                element.Time = Calendar.getInstance().getTime();
                 bluetoothDevices.add(element);
             }
         }else if (action.equals(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION))
